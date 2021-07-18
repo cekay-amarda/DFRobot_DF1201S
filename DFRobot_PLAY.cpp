@@ -330,9 +330,9 @@ uint16_t DFRobot_PLAY::getTotalTime(){
    cmd = pack("QUERY","4");
    
    writeATCommand(cmd.str,cmd.length);
-   String str = readAck(6);
-   //Serial.println(str);
-   return getINT(str);
+   String str = readAck(7);
+   Serial.printf("Serial TT:%s\n",str);
+   return str.toInt();
 }
 uint16_t DFRobot_PLAY::getCurFileNumber(){
    if(curFunction != MUSIC) return false;
