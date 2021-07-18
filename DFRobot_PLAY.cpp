@@ -284,7 +284,7 @@ uint8_t DFRobot_PLAY::getINT(String str){
 
     for(uint8_t i = 0; i < numLen;i++){
       
-      num = num * 10 + str[i] - '0';
+      num = (num * 10) + (str[i] - 0x30);
       
     }
     return num;
@@ -295,7 +295,7 @@ uint16_t DFRobot_PLAY::getCurTime(){
    cmd = pack("QUERY","3");
    writeATCommand(cmd.str,cmd.length);
    String str = readAck(6);
-   return getINT(str);
+   return str.toInt();
    
 }
 bool DFRobot_PLAY::enableAMP(){
@@ -341,7 +341,7 @@ uint16_t DFRobot_PLAY::getCurFileNumber(){
    writeATCommand(cmd.str,cmd.length);
    String str = readAck(6);
    //Serial.println(str);
-   return getINT(str);
+   return str.toInt();
 }
 uint16_t DFRobot_PLAY::getTotalFile(){
    if(curFunction != MUSIC) return false;
@@ -349,8 +349,8 @@ uint16_t DFRobot_PLAY::getTotalFile(){
    cmd = pack("QUERY","2");
    writeATCommand(cmd.str,cmd.length);
    String str = readAck(6);
-   //Serial.println(str);
-   return getINT(str);
+   //Serial.printf("String says:%s\n",str);
+   return str.toInt();
 }
 String DFRobot_PLAY::getFileName(){
    String name="";
@@ -480,6 +480,7 @@ String DFRobot_PLAY::readAck(uint8_t len){
       }
       if((str[offset - 1]) == '\n' && (str[offset - 2] == '\r')) break;
       if(millis() - curr > 1000) {
+		  Serial.println(str);
         return "error";
         break;
       }

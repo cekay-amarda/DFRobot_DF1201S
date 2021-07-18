@@ -17,20 +17,24 @@
 #include <Arduino.h>
 #include <string.h>
 
+  
+
 //extern Stream *dbg;
 class DFRobot_PLAY
 {
 public:
 
-  typedef enum{
-    MUSIC = 1,  //Music Mode 
-    UFDISK,     //Slave mode 
-  }eFunction_t;
-  
   typedef struct{
    String str;
    uint8_t length;
   }sPacket_t;
+  
+typedef enum{
+    MUSIC = 1,  //Music Mode 
+    UFDISK,     //Slave mode 
+  }eFunction_t;
+  
+  
   
   typedef enum{
     SINGLECYCLE = 1,  //Repeat one song 
@@ -199,13 +203,16 @@ public:
    * @param second  Fixed time point
    */
   bool setPlayTime(uint16_t second);
+  sPacket_t pack(String cmd = " ",String para = " " );
+  void writeATCommand(String command,uint8_t length);
+  String readAck(uint8_t len = 4);
+  Stream *_s = NULL;
 private:
   uint8_t getINT(String str);
   uint8_t unicodeToUtf8(uint16_t unicode ,uint8_t * uft8);
-  sPacket_t pack(String cmd = " ",String para = " " );
-  Stream *_s = NULL;
-  void writeATCommand(String command,uint8_t length);
-  String readAck(uint8_t len = 4);
+  
+  //Stream *_s = NULL;
+  
   eFunction_t curFunction;
   String atCmd;
   
